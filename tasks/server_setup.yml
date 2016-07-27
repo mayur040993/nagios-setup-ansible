@@ -1,0 +1,17 @@
+---
+- name: Installing Nagios3 and nagios-nrpe-plugin
+  apt: name={{ item }} update-cache=yes state=installed
+  with_items:
+  - nagios3
+  - nagios-nrpe-plugin
+  - apache2-utils
+  tags:
+  - server_setup
+
+- name: passlib library
+  pip: name=passlib 
+
+- name: Add User Using Http Basic Auth
+  htpasswd: path=/etc/nagios3/htpasswd.users name={{user}} password={{password}} owner=root mode=0644
+  tags:
+  - server_setup

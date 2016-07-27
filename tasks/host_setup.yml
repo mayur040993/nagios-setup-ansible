@@ -1,0 +1,9 @@
+---
+- name: Installing nrpe-server
+  apt: name=nagios-nrpe-server state=installed
+  tags:
+  - host_setup
+
+- lineinfile: dest=/etc/nagios/nrpe.cfg regexp="allowed_hosts=127.0.0.1" line="allowed_hosts=127.0.0.1,{{server_ip}}"
+  tags:
+  - host_setup

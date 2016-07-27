@@ -1,0 +1,18 @@
+---
+- template: src=host.cfg dest=/etc/nagios3/conf.d/{{host_name}}.cfg mode=0644
+  notify:
+    - restart nagios
+
+- stat: path=/etc/nagios3/conf.d/{{host_group}}.cfg
+  register: sym
+
+- name: "Add host in already created host grp"
+  replace: dest=/etc/nagios3/conf.d/{{host_group}}.cfg regexp='^(.*)members(.*)$' replace='\1members {{host_name}},\2'
+  notify:
+  - restart nagios
+  when: sym.stat.islnk is defined
+
+- template: src=hostgroup.cfg dest=/etc/nagios3/conf.d/{{host_group}}.cfg mode=0644
+  notify:
+    - restart nagios
+  when: sym.stat.islnk is not defined

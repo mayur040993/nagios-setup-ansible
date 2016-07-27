@@ -1,0 +1,26 @@
+---
+#SERVER SETUP TAGS: server_setup
+#VARIABLES: user (http auth user) , password (http auth passwd)
+
+- shell: /bin/true
+  register: task 
+
+- include: server_setup.yml
+  when: task is not defined
+  tags: server_setup
+
+#HOST SETUP TAGS: host_setup 
+#VARIABLES: server_ip
+
+- include: host_setup.yml
+  when: task is not defined
+  tags: host_setup
+
+#HOST ENTRY IN SERVERS AND HOST GROUP
+#VARIABLES: host_name,host_group,host_ip
+#TAGS:host_entry
+
+- include: host_entry.yml
+  when: task is not defined
+  tags: host_entry
+
